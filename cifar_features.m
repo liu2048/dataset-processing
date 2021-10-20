@@ -1,5 +1,7 @@
 %% Written by Liu Mingyang
-load('E:\3-Datesets\2-cifar-10-batches-mat\data_batch_1.mat')
+%% cifar10 dataset url: https://www.cs.toronto.edu/~kriz/cifar.html 
+
+load('data_batch_1.mat') % after downloading 'CIFAR-10 Matlab version', load raw data from the local
 
 %% get Anchors
 viewNum = 3;
@@ -7,16 +9,6 @@ Anchor = cell(1,3);
 for it = 1:viewNum
     [idx, C] = kmeans(X{it}, 1000);  % get Anchors
     Anchor{it} = C; clear C
-end
-
-%% 显示RGB图像
- hs = tight_subplot(8,8,[.01 .01],[.1 .01],[.01 .01]); % 改变图像之间的间距
-for n = 1:64
-%     subplot(8,8,n);
-    axes(hs(n));
-    in = n;
-    R = reshape(data(in,1:1024),32,32); G = reshape(data(in,1025:2048),32,32); B = reshape(data(in,2049:3072),32,32);
-    im = cat(3,R,G,B); im = imrotate(im, 270); imshow(im);
 end
 
 %% extract features CH(color Histogram)\Gist\HOG(histogram of oriented gradients)\LBP(local binary pattern)\SURF
@@ -33,7 +25,7 @@ param.imageSize = [32 32];
 param.orientationsPerScale = [8 8 8 8]; % number of orientations per scale (from HF to LF)
 param.numberBlocks = 4;
 param.fc_prefilt = 4;
-Gist = cell(60000,1); % 使用LabelMe工具箱提取Gist特征
+Gist = cell(60000,1); % 浣跨敤LabelMe宸ュ叿绠辨彁鍙朑ist鐗瑰緛
 for n = 1:60000
     R = reshape(data(n,1:1024),32,32); G = reshape(data(n,1025:2048),32,32); B = reshape(data(n,2049:3072),32,32);
     im = cat(3,R,G,B); im = imrotate(im, 270); 
