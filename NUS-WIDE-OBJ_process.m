@@ -1,5 +1,5 @@
-% 从NUS-WIDE-OBJ原始txt数据集中提取出用类别序号表示的一维标签信息train_label/test_label
-% 并从原始文件名称中提取出每一类的标签名称label_name
+% The one-dimensional label information 'train_label/test_label' represented by category number is extracted from NUS-WIDE-OBJ original TXT dataset
+% And extract the label name 'label_name' for each category from the original file name.
 % Written by Liu
 % dataset url: https://lms.comp.nus.edu.sg/wp-content/uploads/2019/research/nuswide/NUS-WIDE.html
  
@@ -62,7 +62,3 @@ for n = 1: class_num
         test_label(te_sample_idx(m), te_co_idx(m)) = n;
     end
 end
-
-
-
-
