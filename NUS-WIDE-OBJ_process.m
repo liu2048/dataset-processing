@@ -1,15 +1,16 @@
-% 从NUS-WIDE-OBJ原始txt数据集中提取出用类别序号表示的一维标签信息train_label/test_label
-% 并从原始文件名称中提取出每一类的标签名称label_name
+% 浠嶯US-WIDE-OBJ鍘熷txt鏁版嵁闆嗕腑鎻愬彇鍑虹敤绫诲埆搴忓彿琛ㄧず鐨勪竴缁存爣绛句俊鎭痶rain_label/test_label
+% 骞朵粠鍘熷鏂囦欢鍚嶇О涓彁鍙栧嚭姣忎竴绫荤殑鏍囩鍚嶇Оlabel_name
 % Written by Liu
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-labelpath='E:\3-Datesets\4-NUS-WIDE-OBJECT\ground truth\';
-feapath = 'E:\3-Datesets\4-NUS-WIDE-OBJECT\low level features\';
-%此处文件地址改为需要的文件夹路径
+% dataset url: https://lms.comp.nus.edu.sg/wp-content/uploads/2019/research/nuswide/NUS-WIDE.html
+ 
+labelpath='ground truth\';
+feapath = 'low level features\';
+%% Change the file address here to the desired folder path
 labelfiles = dir(strcat(labelpath,'*.txt')); trfeafiles = dir(strcat(feapath, 'Train*.txt')); tefeafiles = dir(strcat(feapath, 'Test*.txt')); 
 labelLengthFiles = length(labelfiles); fealengthFiles = 5;
 trfea = cell(1, 5); tefea = cell(1, 5);
-%提取训练样本和测试样本的特征
+
+%% Extract the feature of training samples and test samples
 for i = 1: fealengthFiles
     trfea{1, i} = readmatrix(strcat(feapath, trfeafiles(i).name));
     tefea{1, i} = readmatrix(strcat(feapath, tefeafiles(i).name));
@@ -19,13 +20,13 @@ total_label = cell(labelLengthFiles,1);
 TrainLabel = cell(31, 1); TestLabel = cell(31, 1);
 label_name = cell(31, 1);
 
-%提取出每一类的0/1表示的标签向量
+%% Extract the label vector represented by 0/1 for each category
 nl = 1; tl = 1;
 for i = 1:labelLengthFiles
     total_label{i} = readmatrix(strcat(labelpath,labelfiles(i).name));   
     if mod(i, 2)==0
         TrainLabel{nl} = total_label{i}'; str = labelfiles(i).name;
-        splitstr = regexp(str, 'Train', 'split');  % 用正则表达提取类别名称
+        splitstr = regexp(str, 'Train', 'split');  % Extract category names with regular expressions
         label_name{nl} = splitstr{1};
         nl = nl + 1;
     else
@@ -43,13 +44,14 @@ test_label = zeros(test_sample_num, 5);
 tr_sam_cla_num = zeros(train_sample_num, 1);
 te_sam_cla_num = zeros(test_sample_num, 1);
 
-% 有些样本属于多个类，这里按照label_name中的类别顺序提取出每个样本所属的所有类别，存储于train_label和test_label中
+% Some samples belong to more than one class. 
+% Here, all the categories of each sample are extracted according to the category order in 'Label_name' and stored in 'train_label' and 'test_label'
 for n = 1: class_num
     % train samples
     tr_sample_idx = find(TrainLabel(n, :));
     tr_sam_cla_num(tr_sample_idx) = tr_sam_cla_num(tr_sample_idx) + 1;
     tr_co_idx = tr_sam_cla_num(tr_sample_idx);
-    for m = 1:size(tr_sample_idx, 2)  % 将行数和列数的位置对应
+    for m = 1:size(tr_sample_idx, 2)  % Correspond the number of rows to the number of columns
         train_label(tr_sample_idx(m), tr_co_idx(m)) = n;
     end
     % test samples
