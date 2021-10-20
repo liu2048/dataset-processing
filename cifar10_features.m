@@ -3,14 +3,6 @@
 
 load('data_batch_1.mat') % after downloading 'CIFAR-10 Matlab version', load raw data from the local
 
-%% get Anchors
-viewNum = 3;
-Anchor = cell(1,3);
-for it = 1:viewNum
-    [idx, C] = kmeans(X{it}, 1000);  % get Anchors
-    Anchor{it} = C; clear C
-end
-
 %% extract features CH(color Histogram)\Gist\HOG(histogram of oriented gradients)\LBP(local binary pattern)\SURF
 CH = cell(60000,1);
 for n = 1:60000
@@ -56,3 +48,4 @@ for n = 1:60000
 end  
 LBP = cell2mat(LBP); LBP = double(LBP);
 
+save('Cifar10-features','CH', 'Gist', 'HOG', 'LBP')
